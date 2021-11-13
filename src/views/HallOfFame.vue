@@ -1,13 +1,13 @@
 <template>
   <div>
-    <fame-player-selector />
+    <fame-player-selector v-model="selectedPlayerId.id"/>
     <p/>
-    <FamePlayerDetail />
+    <fame-player-detail :fame-player-id="selectedPlayerId.id" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, reactive } from 'vue'
 import FamePlayerDetail from '@/components/FamePlayer.vue'
 import FamePlayerSelector from '@/components/FamePlayerSelector.vue'
 
@@ -16,6 +16,12 @@ export default defineComponent({
   components: {
     FamePlayerDetail: FamePlayerDetail,
     FamePlayerSelector: FamePlayerSelector
+  },
+  setup () {
+    const selectedPlayerId = reactive({
+      id: 20210001
+    })
+    return { selectedPlayerId }
   }
 })
 
