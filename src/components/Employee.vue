@@ -1,43 +1,27 @@
 <template>
   <div>
     <table>
-      <thead>{{ employee.firstName }} {{ employee.lastName }}</thead>
       <tr>
         <td>ID</td>
-        <td>{{ employee.employeeId }}</td>
+        <td> {{ employee.id }} </td>
       </tr>
       <tr>
-        <td>Frist Name</td>
-        <td>{{ employee.firstName }}</td>
-      </tr>
-      <tr>
-        <td>Last Name</td>
-        <td>{{ employee.lastName }}</td>
-      </tr>
-      <tr>
-        <td>Birthday</td>
-        <td>{{ employee.birthday }}</td>
-      </tr>
-      <tr>
-        <td>Country</td>
-        <td>{{ employee.country }}</td>
+        <td>NAME</td>
+        <td> {{ employee.name }} </td>
       </tr>
     </table>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, reactive } from 'vue'
 
 export default defineComponent({
-  name: 'EmployeeDetail',
+  name: 'Employee',
   setup () {
     const employee = reactive({
-      employeeId: '19911001',
-      firstName: 'John',
-      lastName: 'Chen',
-      birthday: '1970-10-05',
-      country: 'TW'
+      id: 20211009,
+      name: 'Michael Chen'
     })
     return { employee }
   }
@@ -45,7 +29,9 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-table, th, td {
+table, tr, td {
   border: 1px solid black;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
