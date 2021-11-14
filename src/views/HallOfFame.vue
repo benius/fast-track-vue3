@@ -1,6 +1,6 @@
 <template>
   <div>
-    <fame-player-selector v-model="selectedPlayerId.id"/>
+    <fame-player-selector />
     <p/>
     <fame-player-detail :fame-player-id="selectedPlayerId.id" />
   </div>

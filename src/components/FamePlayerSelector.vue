@@ -1,7 +1,7 @@
 <template>
   <div>
-    <select v-model="selectedFamePlayer.id">
-      <option disabled>Please select one</option>
+    <select @change="switchOption($event.target.value)">
+      <option :value="-1" selected>Please select one</option>
       <option v-for="item in famePlayers" :value="item.id" :key="item.id">{{ item.name }}</option>
     </select>
   </div>
@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, watch } from 'vue'
+import { defineComponent, reactive } from 'vue'
 import { FamePlayer } from '@/components/models.ts'
 import { loadAllFamePlayers } from '@/components/functions.ts'
 
@@ -27,11 +27,16 @@ export default defineComponent({
     const selectedFamePlayer = reactive({
       id: 0
     })
-    watch(selectedFamePlayer, (newVal, oldVal) => {
-      selectedFamePlayer.id = famePlayers.findIndex(f => f.id === newVal.id)
-    })
-
     return { famePlayers, selectedFamePlayer }
+  },
+  methods: {
+    switchOption (val: string) {
+      const idx = this.famePlayers.findIndex(f => f.id === Number(val))
+      console.log(idx)
+      if (idx > -1) {
+        this.selectedFamePlayer.id = this.famePlayers[idx].id
+      }
+    }
   }
 })
 
