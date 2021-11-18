@@ -6,7 +6,7 @@
     </select>
   </div>
   <p>
-    Selected player id: {{ selectedFamePlayer.id }}
+    Selected player id: {{ playerId.id }}
   </p>
   <p>
     <a href="https://en.wikipedia.org/wiki/List_of_players_in_the_Naismith_Memorial_Basketball_Hall_of_Fame">
@@ -16,30 +16,38 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, watch } from 'vue'
 import { FamePlayer } from '@/components/models.ts'
 import { loadAllFamePlayers } from '@/components/functions.ts'
 
 export default defineComponent({
   name: 'FamePlayerSelector',
-  setup () {
+  setup (props, { emit }) {
     const famePlayers: FamePlayer[] = loadAllFamePlayers()
-    const selectedFamePlayer = reactive({
+    const playerId = reactive({
       id: 0
     })
-    return { famePlayers, selectedFamePlayer }
+    watch(() => playerId.id, (newId) => {
+      console.log('Watched new id: ', newId)
+      emit('updatePlayerId', newId)
+    })
+
+    return { famePlayers, playerId }
+  },
+  emits: {
+    updatePlayerId: null
   },
   methods: {
     switchOption (val: string) {
       const idx = this.famePlayers.findIndex(f => f.id === Number(val))
-      console.log(idx)
       if (idx > -1) {
-        this.selectedFamePlayer.id = this.famePlayers[idx].id
+        const selectedId = this.famePlayers[idx].id
+        this.playerId.id = selectedId
+        console.log('switchOption:', selectedId)
       }
     }
   }
 })
-
 </script>
 
 <style scoped>

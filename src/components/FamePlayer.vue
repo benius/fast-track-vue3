@@ -1,28 +1,28 @@
 <template>
   <div>
     <table>
-      <thead>{{ famePlayer.name }}</thead>
+      <thead>{{ player.famePlayer.name }}</thead>
       <tr>
         <td>ID</td>
-        <td>{{ famePlayer.id }}</td>
+        <td>{{ player.famePlayer.id }}</td>
       </tr>
       <tr>
         <td>Name</td>
-        <td>{{ famePlayer.name }}</td>
+        <td>{{ player.famePlayer.name }}</td>
       </tr>
       <tr>
         <td>Position</td>
-        <td>{{ famePlayer.position }}</td>
+        <td>{{ player.famePlayer.position }}</td>
       </tr>
       <tr>
         <td>Year</td>
-        <td>{{ famePlayer.year }}</td>
+        <td>{{ player.famePlayer.year }}</td>
       </tr>
       <tr>
         <td>Achievements</td>
         <td>
           <ul>
-            <li v-for="item in famePlayer.achievements" :key="item">
+            <li v-for="item in player.famePlayer.achievements" :key="item">
               {{ item }}
             </li>
           </ul>
@@ -33,21 +33,27 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive } from 'vue'
+import { defineComponent, reactive, watch } from 'vue'
 import { loadAllFamePlayers } from '@/components/functions.ts'
 import { FamePlayer } from '@/components/models'
 
 export default defineComponent({
   name: 'FamePlayer',
   props: {
-    famePlayerId: Number
+    playerId: Number
   },
   setup (props) {
     const famePlayers: FamePlayer[] = loadAllFamePlayers()
-    const idx: number = famePlayers.findIndex(f => f.id === props.famePlayerId)
-    const famePlayer = reactive(famePlayers[idx])
-
-    return { famePlayer }
+    const idx: number = famePlayers.findIndex(f => f.id === props.playerId)
+    const player = reactive({
+      famePlayer: idx > -1 ? famePlayers[idx] : famePlayers[0]
+    })
+    watch(() => props.playerId, (newId) => {
+      console.log('Watched new props.famePlayerId: ', newId)
+      const idx: number = famePlayers.findIndex(f => f.id === newId)
+      player.famePlayer = idx > -1 ? famePlayers[idx] : famePlayers[0]
+    })
+    return { player }
   }
 })
 </script>
